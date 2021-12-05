@@ -2481,17 +2481,17 @@ FHEMAccessory.prototype = {
     if( delay < 500 )
       delay = 500;
 
-    var timer = this.delayed_timers[mapping];
+    var timer = this.delayed_timers[mapping.informId];
     if( timer ) {
       //this.log(this.name + ' delayed: removing old command ' + mapping.characteristic_type);
       clearTimeout( timer );
     }
 
     this.log.info(this.name + ' delaying command ' + mapping.characteristic_type + ' with value ' + value);
-    this.delayed_timers[mapping] = setTimeout( function(){
-                                                 delete this.delayed_timers[mapping];
-                                                 this.command(mapping,value);
-                                               }.bind(this), delay );
+    this.delayed_timers[mapping.informId] = setTimeout( function(){
+        delete this.delayed_timers[mapping.informId];
+        this.command(mapping,value);
+      }.bind(this), delay );
   },
 
   command: function(mapping,value) {
@@ -2640,7 +2640,7 @@ FHEMAccessory.prototype = {
 
     this.log.info('query: ' + (mapping.name?mapping.name:mapping.characteristic_type) + ' for ' + mapping.informId);
     var value = mapping.cached;
-    if( typeof mapping === 'object' && value !== undefined && (!('nocache' in mapping))) {
+    if( typeof mapping === 'object' && value !== undefined && (!('nocache' in mapping)) ) {
       var defined = undefined;
       if( mapping.homekit2name !== undefined ) {
         defined = mapping.homekit2name[value];
@@ -3325,7 +3325,7 @@ function FHEMdebug_handleRequest(request, response){
 
   } else if( request.url == '/subscriptions' ) {
     response.write( '<a href="/">home</a><br><br>' );
-    response.end( 'subscriptions: ' + util.inspect(FHEM_subscriptions, {depth: 5}).replace(/\n/g, '<br>') );
+    response.end( '<pre>subscriptions: ' + util.inspect(FHEM_subscriptions, {depth: 5}) + '</pre>');
 
   } else
     response.end( '<a href="/cached">cached</a><br><a href="/subscriptions">subscriptions</a>' );
