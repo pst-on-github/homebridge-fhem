@@ -44,6 +44,35 @@
           "description": "devspec that matches the devices that should be exported to homebridge."
         },
 
+        "ssl": {
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "use ssl/https when connecting to fhem"
+        },
+
+	        "auth": {
+          "type": "object",
+          "required": false,
+          "#description": "user & password for this FHEM connection",
+          "properties": {
+            "user": {
+              "type": "string",
+              "title": "Name",
+              "required": false,
+              "#placeholder": "<user>",
+              "description": "user for this FHEM connection."
+            },
+            "pass": {
+              "type": "string",
+              "title": "Server",
+              "required": false,
+              "#placeholder": "<password>",
+              "description": "password for this FHEM connection."
+            }
+          }
+        },
+
         "neverTimeout": {
           "type": "boolean",
           "required": false,
